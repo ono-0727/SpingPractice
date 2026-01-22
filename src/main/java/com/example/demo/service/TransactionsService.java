@@ -66,7 +66,7 @@ public class TransactionsService {
     }
 
     /**
-     * 収入登録
+     * 収入をTBに登録
      * @param form 収支入力フォーム
      */
     private void registerIncome(TransactionsForm form) {
@@ -79,7 +79,7 @@ public class TransactionsService {
     }
 
     /**
-     * 支出登録
+     * 支出をTBに登録
      * @param form 収支入力フォーム
      */
     private void registerPay(TransactionsForm form) {
