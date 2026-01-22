@@ -1,0 +1,26 @@
+-- Table: T_EXPEND (収支一覧)
+CREATE TABLE T_EXPEND (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    "month" INTEGER NOT NULL,
+    payments CHAR(1) NOT NULL,
+    content VARCHAR(300),
+    amount BIGINT NOT NULL,
+    data TIMESTAMP NOT NULL,
+    d_flag INTEGER NOT NULL
+);
+
+-- Table: T_INCOME (収入一覧)
+CREATE TABLE T_INCOME (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    "month" INTEGER NOT NULL,
+    content VARCHAR(300) NOT NULL,
+    amount BIGINT NOT NULL
+);
+
+-- Table: T_PAY (支出一覧)
+CREATE TABLE T_PAY (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    "month" INTEGER NOT NULL,
+    content VARCHAR(300) NOT NULL,
+    amount BIGINT NOT NULL
+);

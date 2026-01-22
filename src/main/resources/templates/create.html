@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>収支入力確認画面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .confirm-group {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+        .label {
+            font-weight: bold;
+            color: #666;
+        }
+        .value {
+            margin-top: 5px;
+            font-size: 1.1em;
+        }
+        .button-group {
+            margin-top: 30px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+        .back-btn {
+            background-color: #888;
+            color: white;
+        }
+        .back-btn:hover {
+            background-color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>収支入力確認画面</h1>
+    
+    <div class="confirm-group">
+        <div class="label">対象月:</div>
+        <div class="value" th:text="${transactionsForm.monthDto} + '月'"></div>
+    </div>
+
+    <div class="confirm-group">
+        <div class="label">収支区分:</div>
+        <div class="value" th:text="${transactionsForm.paymentsDto == '1' ? '収入' : '支払い'}"></div>
+    </div>
+
+    <div class="confirm-group">
+        <div class="label">収支内容:</div>
+        <div class="value" th:text="${transactionsForm.contentDto}"></div>
+    </div>
+
+    <div class="confirm-group">
+        <div class="label">金額:</div>
+        <div class="value" th:text="${transactionsForm.amountDto} + '円'"></div>
+    </div>
+
+    <div class="button-group">
+        <form th:action="@{/transactions/complete}" th:object="${transactionsForm}" method="post" style="display: inline;">
+            <input type="hidden" th:field="*{monthDto}" />
+            <input type="hidden" th:field="*{paymentsDto}" />
+            <input type="hidden" th:field="*{contentDto}" />
+            <input type="hidden" th:field="*{amountDto}" />
+            <button type="submit" class="submit-btn">登録</button>
+        </form>
+        
+        <form th:action="@{/transactions/form}" method="get" style="display: inline;">
+            <button type="submit" class="back-btn">戻る</button>
+        </form>
+    </div>
+</body>
+</html>
