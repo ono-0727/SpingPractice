@@ -16,7 +16,7 @@ public class Expend {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "month", nullable = false)
+    @Column(name = "`month`", nullable = false)
     private Integer month;
 
     @Column(name = "payments", nullable = false, length = 1)

@@ -15,7 +15,7 @@ public class Income {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "month", nullable = false)
+    @Column(name = "`month`", nullable = false)
     private Integer month;
 
     @Column(name = "content", nullable = false, length = 300)
