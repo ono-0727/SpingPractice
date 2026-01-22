@@ -10,7 +10,7 @@ CREATE TABLE T_EXPEND (
     payments CHAR(1) NOT NULL,
     content VARCHAR2(300),
     amount NUMBER(13) NOT NULL,
-    data TIMESTAMP NOT NULL,
+    date TIMESTAMP NOT NULL,
     d_flag NUMBER(1) NOT NULL
 );
 
