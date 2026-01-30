@@ -72,7 +72,7 @@ public class TransactionsService {
 	    expend.setPayments((form.getPaymentsDto()));
 	    expend.setContent(form.getContentDto());
 	    expend.setAmount(form.getAmountDto());
-	    expend.setData(LocalDateTime.now());
+	    expend.setDate(LocalDateTime.now());
 	    expend.setDFlag(DflagStatus.NOT_DELETED.getCode());
 	    return expend;
 	}
