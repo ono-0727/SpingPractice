@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>確認画面</h1>
+    <p>以下の内容で登録してよろしいですか？</p>
+    <div>
+        <label>対象月</label>
+		<span th:text="${transactionsForm.monthDto}"></span>
+    </div>
+    <div>
+        <label>収支区分：</label>
+        <span th:text="${transactionsForm.paymentsDto}"></span>
+    </div>
+    <div>
+        <label>問い合わせ内容：</label>
+        <span th:text="${transactionsForm.contentDto}"></span>
+    </div>
+    <div>
+        <label>金額：</label>
+        <span th:text="${transactionsForm.amountDto}"></span>
+    </div>
+    
+    <form action="/transactions/complete" method="post" th:object="${transactionsForm}">
+        <input type="hidden" th:field="*{monthDto}" />
+        <input type="hidden" th:field="*{paymentsDto}" />
+        <input type="hidden" th:field="*{contentDto}" />
+        <input type="hidden" th:field="*{amountDto}" />
+        <input type="submit" value="登録する" />
+    </form>
+    
+    <form action="/transactions/top" method="get">
+        <input type="submit" value="戻る" />
+    </form>
+
+</body>
+</html>
