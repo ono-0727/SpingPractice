@@ -11,10 +11,10 @@
 		<label for="monthDto">対象月</label>
 		<select th:field="*{monthDto}" id="monthDto" name="monthDto">
 			<option th:each="monthOption : ${monthList}" th:value="${monthOption.code}" th:text="${monthOption.value}"></option>
-        </select>
+		</select>
 	</div>
 	<div class ="inputArea">
-		<label for="monthDto">収支区分</label>
+		<label for="paymentsDto">収支区分</label>
 		<select th:field="*{paymentsDto}" id="paymentsDto" name="paymentsDto">
 			<option th:each="payMentsOption : ${payMentsList}" th:value="${payMentsOption.code}" th:text="${payMentsOption.description}"></option>
 	    </select>

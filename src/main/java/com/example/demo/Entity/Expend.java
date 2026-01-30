@@ -38,7 +38,7 @@ public class Expend {
     private Integer amount;
 
     @Column(name = "data", nullable = false)
-    private LocalDateTime date;
+    private LocalDateTime data;
 
     @Column(name = "d_flag", nullable = false)
     private Integer dFlag;

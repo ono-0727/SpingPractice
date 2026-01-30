@@ -27,6 +27,7 @@ public class TransactionsService {
 
 	@Autowired
 	private ExpendRepository expendRepository;
+	
 
 	// Springによって、PaymentStrategy実装クラスがListとして自動注入される
 	public TransactionsService(List<PaymentStrategy> strategies) {
@@ -58,8 +59,7 @@ public class TransactionsService {
 			}
 
 		} catch (DataAccessException e) {
-			throw new RuntimeException(dbSetStep + "でエラーが発生しました。", e) {
-			};
+			throw new RuntimeException(dbSetStep + "でエラーが発生しました。", e);
 		}
 
 	}
@@ -72,7 +72,7 @@ public class TransactionsService {
 	    expend.setPayments((form.getPaymentsDto()));
 	    expend.setContent(form.getContentDto());
 	    expend.setAmount(form.getAmountDto());
-	    expend.setDate(LocalDateTime.now());
+	    expend.setData(LocalDateTime.now());
 	    expend.setDFlag(DflagStatus.NOT_DELETED.getCode());
 	    return expend;
 	}

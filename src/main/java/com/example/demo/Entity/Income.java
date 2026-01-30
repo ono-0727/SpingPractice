@@ -21,8 +21,8 @@ public class Income {
 	
 	@Id
 	@Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "T_EXPEND_SEQ_GEN")
-    @SequenceGenerator(name = "T_EXPEND_SEQ_GEN", sequenceName = "T_EXPEND_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "T_INCOME_SEQ_GEN")
+    @SequenceGenerator(name = "T_INCOME_SEQ_GEN", sequenceName = "T_INCOME_SEQ", allocationSize = 1)
 	private Long id;
 	
 	@Column(name="month", nullable = false)
