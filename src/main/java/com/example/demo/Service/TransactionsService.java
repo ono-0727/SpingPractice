@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,8 @@ import com.example.demo.Service.strategy.PaymentStrategy;
 
 @Service
 public class TransactionsService {
+
+	private static final Logger logger = LoggerFactory.getLogger(TransactionsService.class);
 
 	private Map<PaymentsStatus, PaymentStrategy> strategyMap;
 
@@ -39,7 +43,7 @@ public class TransactionsService {
 	/**
 	 * 取引登録
 	 * @param transactionsForm 取引情報フォーム
-	 * @throws DataAccessException
+	 * @throws RuntimeException 登録処理でエラーが発生した場合
 	 */
 	@Transactional
 	public void register(TransactionsForm form) {
@@ -49,17 +53,21 @@ public class TransactionsService {
 			Expend expendDbValue = createExpendEntity(form);
 			expendRepository.save(expendDbValue);
 			
-			PaymentStrategy strategy = strategyMap.get(PaymentsStatus.fromCode(expendDbValue.getPayments()));
-			if (strategy != null) {
-				dbSetStep = strategy.getDbRecordName() + "の登録処理";
-				strategy.register(form);
-			} else {
-				throw new RuntimeException("対応する支払種別の登録処理が見つかりません。");
+			PaymentsStatus paymentsStatus = PaymentsStatus.fromCode(expendDbValue.getPayments());
+			PaymentStrategy strategy = strategyMap.get(paymentsStatus);
+			
+			if (strategy == null) {
+				String errorMsg = "支払種別[" + paymentsStatus + "]に対応する登録処理が見つかりません。";
+				logger.error(errorMsg + " 登録可能な支払種別: {}", strategyMap.keySet());
+				throw new RuntimeException(errorMsg);
 			}
+			
+			dbSetStep = strategy.getDbRecordName() + "の登録処理";
+			strategy.register(form);
 
 		} catch (DataAccessException e) {
-			throw new RuntimeException(dbSetStep + "でエラーが発生しました。", e) {
-			};
+			logger.error("{}でデータベースエラーが発生しました。", dbSetStep, e);
+			throw new RuntimeException(dbSetStep + "でデータベースエラーが発生しました。", e);
 		}
 
 	}
