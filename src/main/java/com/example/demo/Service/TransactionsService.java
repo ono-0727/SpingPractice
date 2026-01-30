@@ -53,13 +53,21 @@ public class TransactionsService {
 			Expend expendDbValue = createExpendEntity(form);
 			expendRepository.save(expendDbValue);
 			
-			PaymentsStatus paymentsStatus = PaymentsStatus.fromCode(expendDbValue.getPayments());
-			PaymentStrategy strategy = strategyMap.get(paymentsStatus);
+			// 支払種別の検証
+			String paymentsCode = expendDbValue.getPayments();
+			PaymentsStatus paymentsStatus = PaymentsStatus.fromCode(paymentsCode);
+			if (paymentsStatus == null) {
+				String errorMsg = "不正な支払種別コード[" + paymentsCode + "]が指定されました。";
+				logger.error(errorMsg);
+				throw new IllegalArgumentException(errorMsg);
+			}
 			
+			// 支払種別に対応する処理の取得
+			PaymentStrategy strategy = strategyMap.get(paymentsStatus);
 			if (strategy == null) {
 				String errorMsg = "支払種別[" + paymentsStatus + "]に対応する登録処理が見つかりません。";
 				logger.error(errorMsg + " 登録可能な支払種別: {}", strategyMap.keySet());
-				throw new RuntimeException(errorMsg);
+				throw new IllegalStateException(errorMsg);
 			}
 			
 			dbSetStep = strategy.getDbRecordName() + "の登録処理";
