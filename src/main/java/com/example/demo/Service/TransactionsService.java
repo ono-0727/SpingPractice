@@ -42,34 +42,37 @@ public class TransactionsService {
 
 	/**
 	 * 取引登録
-	 * @param transactionsForm 取引情報フォーム
+	 * @param form 取引情報フォーム
 	 * @throws RuntimeException 登録処理でエラーが発生した場合
 	 */
 	@Transactional
 	public void register(TransactionsForm form) {
 		
 		String dbSetStep = EXPEND + "の登録処理";
+		
+		// 支払種別の事前検証
+		String paymentsCode = form.getPaymentsDto();
+		PaymentsStatus paymentsStatus = PaymentsStatus.fromCode(paymentsCode);
+		if (paymentsStatus == null) {
+			String errorMsg = "不正な支払種別コード[" + paymentsCode + "]が指定されました。";
+			logger.error(errorMsg);
+			throw new IllegalArgumentException(errorMsg);
+		}
+		
+		// 支払種別に対応する処理の存在確認
+		PaymentStrategy strategy = strategyMap.get(paymentsStatus);
+		if (strategy == null) {
+			String errorMsg = "支払種別[" + paymentsStatus + "]に対応する登録処理が見つかりません。";
+			logger.error(errorMsg + " 登録可能な支払種別: {}", strategyMap.keySet());
+			throw new IllegalStateException(errorMsg);
+		}
+		
 		try {
+			// 支出テーブルへの登録
 			Expend expendDbValue = createExpendEntity(form);
 			expendRepository.save(expendDbValue);
 			
-			// 支払種別の検証
-			String paymentsCode = expendDbValue.getPayments();
-			PaymentsStatus paymentsStatus = PaymentsStatus.fromCode(paymentsCode);
-			if (paymentsStatus == null) {
-				String errorMsg = "不正な支払種別コード[" + paymentsCode + "]が指定されました。";
-				logger.error(errorMsg);
-				throw new IllegalArgumentException(errorMsg);
-			}
-			
-			// 支払種別に対応する処理の取得
-			PaymentStrategy strategy = strategyMap.get(paymentsStatus);
-			if (strategy == null) {
-				String errorMsg = "支払種別[" + paymentsStatus + "]に対応する登録処理が見つかりません。";
-				logger.error(errorMsg + " 登録可能な支払種別: {}", strategyMap.keySet());
-				throw new IllegalStateException(errorMsg);
-			}
-			
+			// 支払種別に応じた追加登録処理
 			dbSetStep = strategy.getDbRecordName() + "の登録処理";
 			strategy.register(form);
 
