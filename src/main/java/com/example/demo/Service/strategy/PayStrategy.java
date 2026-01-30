@@ -9,7 +9,7 @@ import com.example.demo.Enum.PaymentsStatus;
 import com.example.demo.Repository.PayRepository;
 
 @Component
-public class PayPaymentsStrategy implements PaymentStrategy {
+public class PayStrategy implements PaymentStrategy {
 
 	@Autowired
 	private PayRepository payRepository;
