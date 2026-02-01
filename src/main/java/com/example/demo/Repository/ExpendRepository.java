@@ -3,6 +3,7 @@ package com.example.demo.Repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.Entity.Expend;
@@ -16,5 +17,8 @@ public interface ExpendRepository extends JpaRepository<Expend, Long> {
 	 * @return 指定された論理削除フラグに一致する収支情報のリスト
 	 */
 	  List<Expend> findByDFlag(Integer dFlag);
+	  
+	  @Query(value = "select * from T_EXPEND order by id desc fetch first 1 row only", nativeQuery = true)
+	  Expend findLeatestExpend();
 
 }
